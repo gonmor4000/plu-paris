@@ -51,6 +51,7 @@ footer{margin-top:32px;color:var(--muted);font-size:13px;border-top:1px solid va
 footer a{color:var(--acc)}
 .leaflet-tooltip.lbl{background:var(--card);color:var(--ink);border:1px solid var(--line);font:13px system-ui,sans-serif;padding:4px 8px}
 @media (max-width:860px){.wrap{grid-template-columns:1fr}#map{height:440px}}
+.ml{font-size:13.5px;line-height:1.8;margin:4px 0 10px}.ml a{white-space:nowrap}
 </style>
 </head>
 <body>
@@ -80,6 +81,11 @@ footer a{color:var(--acc)}
   <a class="card" href="explorador.html#proy/colectivo"><h2>Edificio colectivo nuevo</h2><p>Viviendas de obra nueva: programa, gabarits, energía reforzada, bicis, externalidades. 40 artículos.</p><span class="go">Ver los artículos →</span></a>
 </div>
 
+<h2 class="sec">Exploradores de los PLUi de la banlieue</h2>
+<p class="lead" style="margin-bottom:14px">El mismo formato que el de París para cada territorio: índice completo del reglamento, texto oficial con enlace a la página del PDF, buscador y lista de artículos por tipo de proyecto (renovación energética, ampliación, casa nueva, colectivo) filtrada por zona.</p>
+<div class="grid"><a class="card" href="plui/vsgp.html"><h2>Vallée Sud – Grand Paris</h2><p>721 páginas · 76 secciones · 50 zonas. PLUi aprobado 11/12/2024, en vigor 13/01/2025.</p><span class="go">Abrir →</span></a><a class="card" href="plui/gpso.html"><h2>Grand Paris Seine Ouest (GPSO)</h2><p>290 páginas · 91 secciones · 7 zonas. PLUi aprobado 11/12/2024, en vigor 20/01/2025.</p><span class="go">Abrir →</span></a><a class="card" href="plui/bns.html"><h2>Boucle Nord de Seine</h2><p>583 páginas · 353 secciones · 17 zonas. PLUi aprobado 26/06/2025.</p><span class="go">Abrir →</span></a><a class="card" href="plui/pc.html"><h2>Plaine Commune</h2><p>4955 páginas · 928 secciones · 46 zonas. Revisión n°1 aprobada 16/12/2025, en vigor 09/01/2026.</p><span class="go">Abrir →</span></a><a class="card" href="plui/pte.html"><h2>Paris Terres d'Envol</h2><p>511 páginas · 172 secciones · 9 zonas. PLUi aprobado 07/07/2025, aplicable 30/07/2025.</p><span class="go">Abrir →</span></a><a class="card" href="plui/ee.html"><h2>Est Ensemble</h2><p>635 páginas · 81 secciones · 30 zonas. PLUi aprobado 2020, versión en vigor 17/11/2025.</p><span class="go">Abrir →</span></a><a class="card" href="plui/gpge.html"><h2>Grand Paris Grand Est</h2><p>788 páginas · 3633 secciones · 31 zonas. PLUi aprobado 17/12/2024, en vigor 15/01/2025.</p><span class="go">Abrir →</span></a><a class="card" href="plui/pemb.html"><h2>Paris Est Marne & Bois</h2><p>1841 páginas · 319 secciones · 13 zonas. PLUi aprobado 12/12/2023.</p><span class="go">Abrir →</span></a><a class="card" href="plui/gpsea.html"><h2>Grand Paris Sud Est Avenir</h2><p>1153 páginas · 495 secciones · 10 zonas. PLUi aprobado 08/10/2025.</p><span class="go">Abrir →</span></a><a class="card" href="plui/gosb.html"><h2>Grand-Orly Seine Bièvre</h2><p>2837 páginas · 789 secciones · 10 zonas. PLUi aprobado 16/12/2025, en vigor 21/02/2026.</p><span class="go">Abrir →</span></a><a class="card" href="plui/gpseo.html"><h2>Grand Paris Seine & Oise (GPS&O)</h2><p>407 páginas · 745 secciones · 27 zonas. PLUi aprobado 16/01/2020 (versión del 03/09/2026).</p><span class="go">Abrir →</span></a><a class="card" href="plui/sqy.html"><h2>Saint-Quentin-en-Yvelines (SQY)</h2><p>103 páginas · 99 secciones · 3 zonas. PLUi aprobado 23/02/2017 (versión del 19/02/2026).</p><span class="go">Abrir →</span></a></div>
+<p class="lead" style="margin:14px 0 4px"><b>Paris Ouest La Défense</b> (aún sin PLUi), PLU por municipio: <a href="plui/pold_92026.html">Courbevoie</a> · <a href="plui/pold_92033.html">Garches</a> · <a href="plui/pold_92035.html">La Garenne-Colombes</a> · <a href="plui/pold_92044.html">Levallois-Perret</a> · <a href="plui/pold_92050.html">Nanterre</a> · <a href="plui/pold_92051.html">Neuilly-sur-Seine</a> · <a href="plui/pold_92062.html">Puteaux</a> · <a href="plui/pold_92063.html">Rueil-Malmaison</a> · <a href="plui/pold_92064.html">Saint-Cloud</a> · <a href="plui/pold_92073.html">Suresnes</a> · <a href="plui/pold_92076.html">Vaucresson</a></p>
+
 <div class="grid">
   <a class="card" href="explorador.html">
     <h2>Explorador del PLU bioclimatique</h2>
@@ -101,6 +107,8 @@ Documento de consulta sin valor reglamentario. Contornos municipales: geo.api.go
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script>
 const COL={paris:'#2f6b4f',t2:'#4e79a7',t3:'#59a14f',t4:'#b07aa1',t5:'#f28e2b',t6:'#e15759',t7:'#9c755f',t8:'#76b7b2',t9:'#edc948',t10:'#ff9da7',t11:'#8cd17d',t12:'#86bcb6'};
+const EXPL={"t2": "vsgp", "t3": "gpso", "t5": "bns", "t6": "pc", "t7": "pte", "t8": "ee", "t9": "gpge", "t10": "pemb", "t11": "gpsea", "t12": "gosb"};
+const POLD={"92026": "Courbevoie", "92033": "Garches", "92035": "La Garenne-Colombes", "92044": "Levallois-Perret", "92050": "Nanterre", "92051": "Neuilly-sur-Seine", "92062": "Puteaux", "92063": "Rueil-Malmaison", "92064": "Saint-Cloud", "92073": "Suresnes", "92076": "Vaucresson"};
 const GPU=(lat,lon)=>`https://www.geoportail-urbanisme.gouv.fr/map/#tile=1&lon=${lon.toFixed(5)}&lat=${lat.toFixed(5)}&zoom=17`;
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
@@ -123,10 +131,16 @@ function show(tid,ctx){
     h+=`<a class="btn" href="explorador.html">Abrir el explorador del PLU</a><a class="btn sec" href="explorador.html#proy">Artículos por tipo de proyecto</a><a class="btn sec" href="${p.url}" target="_blank" rel="noopener">PLU en paris.fr</a>`;
   }else if(p.estado==='municipal'){
     h+=`<p class="hint">Aquí aún no hay PLUi: se aplica el PLU de cada municipio.</p>`;
-    if(ctx&&ctx.lat) h+=`<a class="btn" href="${GPU(ctx.lat,ctx.lon)}" target="_blank" rel="noopener">PLU de ${esc(ctx.commune||'este municipio')} en el Géoportail</a>`;
-    h+=`<a class="btn ${ctx&&ctx.lat?'sec':''}" href="${p.url}" target="_blank" rel="noopener">Página del territorio</a>`;
+    if(ctx&&ctx.insee&&POLD[ctx.insee]){
+      h+=`<a class="btn" href="plui/pold_${ctx.insee}.html">Explorador del PLU de ${esc(ctx.commune)}</a><a class="btn sec" href="plui/pold_${ctx.insee}.html#proy">Artículos por tipo de proyecto</a>`;
+    }else{
+      h+=`<p class="hint" style="margin-top:6px">Exploradores por municipio:</p><div class="ml">${Object.entries(POLD).map(([i,n])=>`<a href="plui/pold_${i}.html">${esc(n)}</a>`).join(' · ')}</div>`;
+    }
+    if(ctx&&ctx.lat) h+=`<a class="btn sec" href="${GPU(ctx.lat,ctx.lon)}" target="_blank" rel="noopener">Ver la parcela en el Géoportail</a>`;
+    h+=`<a class="btn sec" href="${p.url}" target="_blank" rel="noopener">Página del territorio</a>`;
   }else{
-    h+=`<a class="btn" href="${p.url}" target="_blank" rel="noopener">Abrir el PLUi</a>`;
+    if(EXPL[tid]) h+=`<a class="btn" href="plui/${EXPL[tid]}.html">Abrir el explorador del PLUi</a><a class="btn sec" href="plui/${EXPL[tid]}.html#proy">Artículos por tipo de proyecto</a>`;
+    h+=`<a class="btn ${EXPL[tid]?'sec':''}" href="${p.url}" target="_blank" rel="noopener">Web del territorio</a>`;
   }
   if(ctx&&ctx.lat&&p.estado!=='municipal') h+=`<a class="btn sec" href="${GPU(ctx.lat,ctx.lon)}" target="_blank" rel="noopener">Ver la parcela en el Géoportail</a>`;
   document.getElementById('info').innerHTML=h;
@@ -144,7 +158,7 @@ function goTo(lat,lon,label){
   marker=L.marker([lat,lon]).addTo(map);
   map.setView([lat,lon],15);
   const c=locate(lat,lon);
-  if(c){show(c.t,{addr:label,commune:c.nom,lat,lon});}
+  if(c){show(c.t,{addr:label,commune:c.nom,insee:c.insee,lat,lon});}
   else{
     selected=null;terrLayer.setStyle(styleT);
     document.getElementById('info').innerHTML=`<p class="meta">📍 ${esc(label)}</p><span class="tag w">Fuera de la Métropole du Grand Paris</span><h2>Consulta el Géoportail</h2><p class="hint">Esta dirección no está en París ni en los territorios del mapa. El Géoportail de l'urbanisme muestra su PLU.</p><a class="btn" href="${GPU(lat,lon)}" target="_blank" rel="noopener">Ver el PLU en el Géoportail</a>`;
@@ -158,7 +172,7 @@ fetch('territorios.geojson').then(r=>r.json()).then(gj=>{
   comLayer=L.geoJSON({type:'FeatureCollection',features:communes},{interactive:false,style:{color:'#fff',weight:.6,opacity:.8,fill:false}});
   terrLayer=L.geoJSON({type:'FeatureCollection',features:terr},{style:styleT,onEachFeature:(f,l)=>{
     l.bindTooltip(f.properties.nom,{sticky:true,className:'lbl'});
-    l.on('click',e=>{const c=locate(e.latlng.lat,e.latlng.lng);show(f.properties.id,c?{commune:c.nom,lat:e.latlng.lat,lon:e.latlng.lng}:null)});
+    l.on('click',e=>{const c=locate(e.latlng.lat,e.latlng.lng);show(f.properties.id,c?{commune:c.nom,insee:c.insee,lat:e.latlng.lat,lon:e.latlng.lng}:null)});
     l.on('mouseover',()=>l.setStyle({fillOpacity:.6}));l.on('mouseout',()=>terrLayer.resetStyle(l)||l.setStyle(styleT(f)));
   }}).addTo(map);
   comLayer.addTo(map);
