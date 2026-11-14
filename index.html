@@ -39,6 +39,8 @@ h1{font-size:clamp(26px,4.5vw,38px);line-height:1.15;margin:0 0 8px;letter-spaci
 .legend button{display:flex;align-items:center;gap:8px;width:100%;border:0;background:none;color:var(--ink);font:inherit;font-size:14px;padding:4px 2px;cursor:pointer;text-align:left;border-radius:6px}
 .legend button:hover{background:var(--accbg)}
 .sw{width:14px;height:14px;border-radius:3px;flex:none;border:1px solid rgba(0,0,0,.25)}
+h2.sec{font-size:clamp(20px,3vw,26px);margin:36px 0 6px}
+.grid.pj{margin-top:0}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-top:28px}
 a.card{display:block;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px;color:inherit;text-decoration:none;transition:border-color .15s,transform .15s}
 a.card:hover{border-color:var(--acc);transform:translateY(-2px)}
@@ -68,6 +70,14 @@ footer a{color:var(--acc)}
     <div id="info"><p class="hint">Selecciona una zona en el mapa o busca una dirección.</p></div>
     <div class="legend"><h3>Territorios</h3><div id="legend"></div></div>
   </aside>
+</div>
+
+<h2 class="sec">Artículos del PLU de París por tipo de proyecto</h2>
+<p class="lead" style="margin-bottom:14px">Elige tu proyecto y te mostramos los artículos que hay que revisar, con una lista para ir marcándolos.</p>
+<div class="grid pj">
+  <a class="card" href="explorador.html#proy/ite"><h2>Renovación energética</h2><p>Aislamiento por el exterior de muros y cubierta, carpinterías, protecciones solares, paneles. 17 artículos.</p><span class="go">Ver los artículos →</span></a>
+  <a class="card" href="explorador.html#proy/casa"><h2>Casa nueva</h2><p>Vivienda unifamiliar de obra nueva: implantación, alturas, espacios libres, bioclimatismo. 28 artículos.</p><span class="go">Ver los artículos →</span></a>
+  <a class="card" href="explorador.html#proy/colectivo"><h2>Edificio colectivo nuevo</h2><p>Viviendas de obra nueva: programa, gabarits, energía reforzada, bicis, externalidades. 40 artículos.</p><span class="go">Ver los artículos →</span></a>
 </div>
 
 <div class="grid">
@@ -110,7 +120,7 @@ function show(tid,ctx){
   h+=`<h2>${esc(p.nom)}</h2>`;
   h+=`<p class="meta">${ctx&&ctx.commune?'Municipio: <b>'+esc(ctx.commune)+'</b> · ':''}${tid==='paris'?'20 arrondissements':p.n+' municipios'}</p>`;
   if(tid==='paris'){
-    h+=`<a class="btn" href="explorador.html">Abrir el explorador del PLU</a><a class="btn sec" href="${p.url}" target="_blank" rel="noopener">PLU en paris.fr</a>`;
+    h+=`<a class="btn" href="explorador.html">Abrir el explorador del PLU</a><a class="btn sec" href="explorador.html#proy">Artículos por tipo de proyecto</a><a class="btn sec" href="${p.url}" target="_blank" rel="noopener">PLU en paris.fr</a>`;
   }else if(p.estado==='municipal'){
     h+=`<p class="hint">Aquí aún no hay PLUi: se aplica el PLU de cada municipio.</p>`;
     if(ctx&&ctx.lat) h+=`<a class="btn" href="${GPU(ctx.lat,ctx.lon)}" target="_blank" rel="noopener">PLU de ${esc(ctx.commune||'este municipio')} en el Géoportail</a>`;
