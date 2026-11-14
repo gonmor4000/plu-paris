@@ -1,0 +1,16 @@
+PLUi de la banlieue parisienne - descargados del Geoportail de l'urbanisme (version en vigor) el 14/11/2026
+
+Una carpeta por territorio (prefijo = departamento):
+  Reglement/   reglamento escrito (fichero *_reglement_AAAAMMDD.pdf) + planos del reglamento (*_reglement_graphique_N_*.pdf) + prescripciones
+  PADD/        Projet d'Amenagement et de Developpement Durables
+  *_en_partes/ los reglamentos de mas de 25 MB partidos por paginas (mismo contenido que el PDF completo)
+
+Territorios: 78 GPS&O, 78 Saint-Quentin-en-Yvelines, 92 Boucle Nord de Seine, 92 Grand Paris Seine Ouest,
+92 Vallee Sud Grand Paris, 92 Paris Ouest La Defense (aun sin PLUi: PLU de sus 11 municipios),
+93 Est Ensemble, 93 Grand Paris Grand Est, 93 Paris Terres d'Envol, 93 Plaine Commune,
+94 Grand-Orly Seine Bievre, 94 Grand Paris Sud Est Avenir, 94 Paris Est Marne et Bois.
+
+Paris Terres d'Envol: los planos de zonificacion vienen de su web en ZIP (Plans-de-zonage.zip, Plans-des-prescriptions-graphiques.zip).
+Antes de un permis o DP, comprueba en la web del territorio que no hay una modificacion mas reciente.
+
+Exploradores: en cada carpeta hay un Explorador_PLUi_*.html (o Explorador_PLU_*.html) que se abre con el navegador: indice de articulos por zona y tema, y guia por tipo de proyecto. Tambien en linea: https://gonmor4000.github.io/plu-paris/
