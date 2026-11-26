@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PLU de París y banlieue</title>
+<meta name="description" content="Mapa de París y su banlieue por territorios: busca una dirección y abre el PLU o PLUi que le corresponde.">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<style>
+:root{--bg:#f6f4ef;--card:#fff;--ink:#1d1f22;--muted:#5d6168;--line:#ddd8cc;--acc:#2f6b4f;--accbg:#e6f0ea;--warn:#8a5a00;--warnbg:#fbf0d9}
+@media (prefers-color-scheme:dark){:root{--bg:#16181b;--card:#1f2226;--ink:#ecebe7;--muted:#a3a7ad;--line:#33373d;--acc:#7cc3a0;--accbg:#1f3329;--warn:#f0c46a;--warnbg:#3a2f17}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:1180px;margin:0 auto;padding:36px 16px 40px}
+h1{font-size:clamp(26px,4.5vw,38px);line-height:1.15;margin:0 0 8px;letter-spacing:-.01em}
+.lead{color:var(--muted);max-width:720px;margin:0 0 22px}
+.search{position:relative;max-width:640px;margin:0 0 16px}
+.search input{width:100%;padding:13px 16px 13px 42px;font:inherit;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);outline:none}
+.search input:focus{border-color:var(--acc);box-shadow:0 0 0 3px var(--accbg)}
+.search svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted)}
+.sugg{position:absolute;z-index:1000;left:0;right:0;top:calc(100% + 4px);background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,.12);display:none}
+.sugg button{display:block;width:100%;text-align:left;padding:10px 14px;border:0;background:none;color:var(--ink);font:inherit;font-size:15px;cursor:pointer;border-top:1px solid var(--line)}
+.sugg button:first-child{border-top:0}
+.sugg button:hover,.sugg button.on{background:var(--accbg)}
+.sugg small{color:var(--muted)}
+.wrap{display:grid;grid-template-columns:1fr 340px;gap:16px;align-items:start}
+#map{height:620px;border-radius:12px;border:1px solid var(--line);background:#e8e6df}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px}
+.panel h2{font-size:18px;margin:0 0 4px;line-height:1.25}
+.panel .meta{color:var(--muted);font-size:14px;margin:0 0 12px}
+.tag{display:inline-block;font-size:12px;font-weight:600;padding:2px 8px;border-radius:99px;background:var(--accbg);color:var(--acc);margin-bottom:8px}
+.tag.w{background:var(--warnbg);color:var(--warn)}
+.btn{display:block;text-align:center;padding:11px 14px;border-radius:9px;background:var(--acc);color:#fff;font-weight:600;text-decoration:none;margin-top:8px;font-size:15px}
+@media (prefers-color-scheme:dark){.btn{color:#10261b}}
+.btn.sec{background:transparent;color:var(--acc);border:1px solid var(--acc)}
+.hint{color:var(--muted);font-size:14px;margin:0}
+.legend{margin-top:14px;border-top:1px solid var(--line);padding-top:12px}
+.legend h3{font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin:0 0 6px}
+.legend button{display:flex;align-items:center;gap:8px;width:100%;border:0;background:none;color:var(--ink);font:inherit;font-size:14px;padding:4px 2px;cursor:pointer;text-align:left;border-radius:6px}
+.legend button:hover{background:var(--accbg)}
+.sw{width:14px;height:14px;border-radius:3px;flex:none;border:1px solid rgba(0,0,0,.25)}
+h2.sec{font-size:clamp(20px,3vw,26px);margin:36px 0 6px}
+.grid.pj{margin-top:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-top:28px}
+a.card{display:block;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px;color:inherit;text-decoration:none;transition:border-color .15s,transform .15s}
+a.card:hover{border-color:var(--acc);transform:translateY(-2px)}
+.card h2{font-size:18px;margin:0 0 6px}
+.card p{margin:0 0 12px;color:var(--muted);font-size:15px}
+.go{color:var(--acc);font-weight:600;font-size:14px}
+footer{margin-top:32px;color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:14px}
+footer a{color:var(--acc)}
+.leaflet-tooltip.lbl{background:var(--card);color:var(--ink);border:1px solid var(--line);font:13px system-ui,sans-serif;padding:4px 8px}
+@media (max-width:860px){.wrap{grid-template-columns:1fr}#map{height:440px}}
+.ml{font-size:13.5px;line-height:1.8;margin:4px 0 10px}.ml a{white-space:nowrap}
+.homebtn{display:inline-flex;align-items:center;gap:6px;padding:6px 11px;border-radius:8px;border:1px solid var(--line);color:inherit;text-decoration:none;font-weight:600;font-size:14px;white-space:nowrap}
+.homebtn:hover{border-color:currentColor}
+.lang{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;font-size:13px;font-weight:600;flex:none}
+.lang a,.lang span{padding:5px 9px;text-decoration:none;color:inherit}
+.lang span{background:var(--line)}
+.lang a{opacity:.7}.lang a:hover{opacity:1}
+</style>
+</head>
+<body>
+<main>
+<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin:0 0 18px"><span></span><div class="lang"><a href="../index.html" onclick="this.href=this.getAttribute('href').split('#')[0]+location.hash" hreflang="fr" title="Voir en français">FR</a><span>ES</span></div></div>
+<h1>Urbanismo en París y su banlieue</h1>
+<p class="lead">Busca una dirección o haz clic en el mapa para saber qué documento de urbanismo se aplica y abrirlo.</p>
+
+<div class="search">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+  <input id="q" type="search" placeholder="Escribe una dirección, p. ej. 46 rue Planchat Paris" autocomplete="off" aria-label="Dirección">
+  <div class="sugg" id="sugg"></div>
+</div>
+
+<div class="wrap">
+  <div id="map" role="application" aria-label="Mapa de territorios"></div>
+  <aside class="panel">
+    <div id="info"><p class="hint">Selecciona una zona en el mapa o busca una dirección.</p></div>
+    <div class="legend"><h3>Territorios</h3><div id="legend"></div></div>
+  </aside>
+</div>
+
+<h2 class="sec">Artículos del PLU de París por tipo de proyecto</h2>
+<p class="lead" style="margin-bottom:14px">Elige tu proyecto y te mostramos los artículos que hay que revisar, con una lista para ir marcándolos.</p>
+<div class="grid pj">
+  <a class="card" href="explorador.html#proy/ite"><h2>Renovación energética</h2><p>Aislamiento por el exterior de muros y cubierta, carpinterías, protecciones solares, paneles. 17 artículos.</p><span class="go">Ver los artículos →</span></a>
+  <a class="card" href="explorador.html#proy/casa"><h2>Casa nueva</h2><p>Vivienda unifamiliar de obra nueva: implantación, alturas, espacios libres, bioclimatismo. 28 artículos.</p><span class="go">Ver los artículos →</span></a>
+  <a class="card" href="explorador.html#proy/colectivo"><h2>Edificio colectivo nuevo</h2><p>Viviendas de obra nueva: programa, gabarits, energía reforzada, bicis, externalidades. 40 artículos.</p><span class="go">Ver los artículos →</span></a>
+</div>
+
+<h2 class="sec">Exploradores de los PLUi de la banlieue</h2>
+<p class="lead" style="margin-bottom:14px">El mismo formato que el de París para cada territorio: índice completo del reglamento, texto oficial con enlace a la página del PDF, buscador y lista de artículos por tipo de proyecto (renovación energética, ampliación, casa nueva, colectivo) filtrada por zona.</p>
+<div class="grid"><a class="card" href="plui/vsgp.html"><h2>Vallée Sud – Grand Paris</h2><p>721 páginas · 76 secciones · 50 zonas. PLUi aprobado 11/12/2024, en vigor 13/01/2025.</p><span class="go">Abrir →</span></a><a class="card" href="plui/gpso.html"><h2>Grand Paris Seine Ouest (GPSO)</h2><p>290 páginas · 91 secciones · 7 zonas. PLUi aprobado 11/12/2024, en vigor 20/01/2025.</p><span class="go">Abrir →</span></a><a class="card" href="plui/bns.html"><h2>Boucle Nord de Seine</h2><p>583 páginas · 353 secciones · 17 zonas. PLUi aprobado 26/06/2025.</p><span class="go">Abrir →</span></a><a class="card" href="plui/pc.html"><h2>Plaine Commune</h2><p>4955 páginas · 928 secciones · 46 zonas. Revisión n°1 aprobada 16/12/2025, en vigor 09/01/2026.</p><span class="go">Abrir →</span></a><a class="card" href="plui/pte.html"><h2>Paris Terres d'Envol</h2><p>511 páginas · 172 secciones · 9 zonas. PLUi aprobado 07/07/2025, aplicable 30/07/2025.</p><span class="go">Abrir →</span></a><a class="card" href="plui/ee.html"><h2>Est Ensemble</h2><p>635 páginas · 81 secciones · 30 zonas. PLUi aprobado 2020, versión en vigor 17/11/2025.</p><span class="go">Abrir →</span></a><a class="card" href="plui/gpge.html"><h2>Grand Paris Grand Est</h2><p>788 páginas · 3633 secciones · 31 zonas. PLUi aprobado 17/12/2024, en vigor 15/01/2025.</p><span class="go">Abrir →</span></a><a class="card" href="plui/pemb.html"><h2>Paris Est Marne & Bois</h2><p>1841 páginas · 319 secciones · 13 zonas. PLUi aprobado 12/12/2023.</p><span class="go">Abrir →</span></a><a class="card" href="plui/gpsea.html"><h2>Grand Paris Sud Est Avenir</h2><p>1153 páginas · 495 secciones · 10 zonas. PLUi aprobado 08/10/2025.</p><span class="go">Abrir →</span></a><a class="card" href="plui/gosb.html"><h2>Grand-Orly Seine Bièvre</h2><p>2837 páginas · 789 secciones · 10 zonas. PLUi aprobado 16/12/2025, en vigor 21/02/2026.</p><span class="go">Abrir →</span></a><a class="card" href="plui/gpseo.html"><h2>Grand Paris Seine & Oise (GPS&O)</h2><p>407 páginas · 745 secciones · 27 zonas. PLUi aprobado 16/01/2020 (versión del 03/09/2026).</p><span class="go">Abrir →</span></a><a class="card" href="plui/sqy.html"><h2>Saint-Quentin-en-Yvelines (SQY)</h2><p>103 páginas · 99 secciones · 3 zonas. PLUi aprobado 23/02/2017 (versión del 19/02/2026).</p><span class="go">Abrir →</span></a></div>
+<p class="lead" style="margin:14px 0 4px"><b>Paris Ouest La Défense</b> (aún sin PLUi), PLU por municipio: <a href="plui/pold_92026.html">Courbevoie</a> · <a href="plui/pold_92033.html">Garches</a> · <a href="plui/pold_92035.html">La Garenne-Colombes</a> · <a href="plui/pold_92044.html">Levallois-Perret</a> · <a href="plui/pold_92050.html">Nanterre</a> · <a href="plui/pold_92051.html">Neuilly-sur-Seine</a> · <a href="plui/pold_92062.html">Puteaux</a> · <a href="plui/pold_92063.html">Rueil-Malmaison</a> · <a href="plui/pold_92064.html">Saint-Cloud</a> · <a href="plui/pold_92073.html">Suresnes</a> · <a href="plui/pold_92076.html">Vaucresson</a></p>
+
+<div class="grid">
+  <a class="card" href="explorador.html">
+    <h2>Explorador del PLU bioclimatique</h2>
+    <p>Règlement Tome 1 de París: 400 artículos con buscador, glosario, figuras, resúmenes en español y guía por tipo de obra.</p>
+    <span class="go">Abrir el explorador →</span>
+  </a>
+  <a class="card" href="enlaces.html">
+    <h2>Tabla de PLU de la banlieue</h2>
+    <p>Estado, fechas y enlaces oficiales de los PLUi de la Métropole du Grand Paris y la grande couronne.</p>
+    <span class="go">Ver la tabla →</span>
+  </a>
+</div>
+
+<footer>
+Documento de consulta sin valor reglamentario. Contornos municipales: geo.api.gouv.fr. Fondo de mapa y búsqueda de direcciones: IGN Géoplateforme. El texto oficial de París es el <a href="../REG1.pdf">Règlement Tome 1 (PDF)</a>. Comprueba siempre la versión vigente en el <a href="https://www.geoportail-urbanisme.gouv.fr/map/">Géoportail de l'urbanisme</a>.
+</footer>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+const COL={paris:'#2f6b4f',t2:'#4e79a7',t3:'#59a14f',t4:'#b07aa1',t5:'#f28e2b',t6:'#e15759',t7:'#9c755f',t8:'#76b7b2',t9:'#edc948',t10:'#ff9da7',t11:'#8cd17d',t12:'#86bcb6'};
+const EXPL={"t2": "vsgp", "t3": "gpso", "t5": "bns", "t6": "pc", "t7": "pte", "t8": "ee", "t9": "gpge", "t10": "pemb", "t11": "gpsea", "t12": "gosb"};
+const POLD={"92026": "Courbevoie", "92033": "Garches", "92035": "La Garenne-Colombes", "92044": "Levallois-Perret", "92050": "Nanterre", "92051": "Neuilly-sur-Seine", "92062": "Puteaux", "92063": "Rueil-Malmaison", "92064": "Saint-Cloud", "92073": "Suresnes", "92076": "Vaucresson"};
+const GPU=(lat,lon)=>`https://www.geoportail-urbanisme.gouv.fr/map/#tile=1&lon=${lon.toFixed(5)}&lat=${lat.toFixed(5)}&zoom=17`;
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+const map=L.map('map',{zoomSnap:.25}).setView([48.85,2.36],10.5);
+L.tileLayer('https://data.geopf.fr/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2&STYLE=normal&TILEMATRIXSET=PM&FORMAT=image/png&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}',
+  {maxZoom:19,maxNativeZoom:19,attribution:'© IGN Géoplateforme'}).addTo(map);
+
+let T={}, communes=[], terrLayer, comLayer, marker, selected=null;
+
+function styleT(f){const s=f.properties.id===selected,k=map.getZoom()>=14?.35:1;return{color:s?'#111':'#fff',weight:s?3:1.6,fillColor:COL[f.properties.id],fillOpacity:(s?.55:.38)*k,dashArray:f.properties.estado==='municipal'?'4 3':null}}
+
+function show(tid,ctx){
+  selected=tid; terrLayer.setStyle(styleT);
+  const p=T[tid].properties; let h='';
+  if(ctx&&ctx.addr) h+=`<p class="meta" style="margin-bottom:8px">📍 ${esc(ctx.addr)}</p>`;
+  h+=p.estado==='municipal'?'<span class="tag w">PLU municipal</span>':`<span class="tag">${esc(p.doc)} aprobado</span>`;
+  h+=`<h2>${esc(p.nom)}</h2>`;
+  h+=`<p class="meta">${ctx&&ctx.commune?'Municipio: <b>'+esc(ctx.commune)+'</b> · ':''}${tid==='paris'?'20 arrondissements':p.n+' municipios'}</p>`;
+  if(tid==='paris'){
+    h+=`<a class="btn" href="explorador.html">Abrir el explorador del PLU</a><a class="btn sec" href="explorador.html#proy">Artículos por tipo de proyecto</a><a class="btn sec" href="${p.url}" target="_blank" rel="noopener">PLU en paris.fr</a>`;
+  }else if(p.estado==='municipal'){
+    h+=`<p class="hint">Aquí aún no hay PLUi: se aplica el PLU de cada municipio.</p>`;
+    if(ctx&&ctx.insee&&POLD[ctx.insee]){
+      h+=`<a class="btn" href="plui/pold_${ctx.insee}.html">Explorador del PLU de ${esc(ctx.commune)}</a><a class="btn sec" href="plui/pold_${ctx.insee}.html#proy">Artículos por tipo de proyecto</a>`;
+    }else{
+      h+=`<p class="hint" style="margin-top:6px">Exploradores por municipio:</p><div class="ml">${Object.entries(POLD).map(([i,n])=>`<a href="plui/pold_${i}.html">${esc(n)}</a>`).join(' · ')}</div>`;
+    }
+    if(ctx&&ctx.lat) h+=`<a class="btn sec" href="${GPU(ctx.lat,ctx.lon)}" target="_blank" rel="noopener">Ver la parcela en el Géoportail</a>`;
+    h+=`<a class="btn sec" href="${p.url}" target="_blank" rel="noopener">Página del territorio</a>`;
+  }else{
+    if(EXPL[tid]) h+=`<a class="btn" href="plui/${EXPL[tid]}.html">Abrir el explorador del PLUi</a><a class="btn sec" href="plui/${EXPL[tid]}.html#proy">Artículos por tipo de proyecto</a>`;
+    h+=`<a class="btn ${EXPL[tid]?'sec':''}" href="${p.url}" target="_blank" rel="noopener">Web del territorio</a>`;
+  }
+  if(ctx&&ctx.lat&&p.estado!=='municipal') h+=`<a class="btn sec" href="${GPU(ctx.lat,ctx.lon)}" target="_blank" rel="noopener">Ver la parcela en el Géoportail</a>`;
+  document.getElementById('info').innerHTML=h;
+}
+
+function inRing(x,y,r){let c=false;for(let i=0,j=r.length-1;i<r.length;j=i++){const[xi,yi]=r[i],[xj,yj]=r[j];if((yi>y)!==(yj>y)&&x<(xj-xi)*(y-yi)/(yj-yi)+xi)c=!c}return c}
+function inPoly(x,y,poly){if(!inRing(x,y,poly[0]))return false;for(let k=1;k<poly.length;k++)if(inRing(x,y,poly[k]))return false;return true}
+function locate(lat,lon){
+  for(const f of communes){const g=f.geometry;const ps=g.type==='Polygon'?[g.coordinates]:g.coordinates;if(ps.some(p=>inPoly(lon,lat,p)))return f.properties}
+  return null;
+}
+
+function goTo(lat,lon,label){
+  if(marker)marker.remove();
+  marker=L.marker([lat,lon]).addTo(map);
+  map.setView([lat,lon],15);
+  const c=locate(lat,lon);
+  if(c){show(c.t,{addr:label,commune:c.nom,insee:c.insee,lat,lon});}
+  else{
+    selected=null;terrLayer.setStyle(styleT);
+    document.getElementById('info').innerHTML=`<p class="meta">📍 ${esc(label)}</p><span class="tag w">Fuera de la Métropole du Grand Paris</span><h2>Consulta el Géoportail</h2><p class="hint">Esta dirección no está en París ni en los territorios del mapa. El Géoportail de l'urbanisme muestra su PLU.</p><a class="btn" href="${GPU(lat,lon)}" target="_blank" rel="noopener">Ver el PLU en el Géoportail</a>`;
+  }
+}
+
+fetch('../territorios.geojson').then(r=>r.json()).then(gj=>{
+  const terr=gj.features.filter(f=>f.properties.kind==='territorio');
+  communes=gj.features.filter(f=>f.properties.kind==='commune');
+  terr.forEach(f=>T[f.properties.id]=f);
+  comLayer=L.geoJSON({type:'FeatureCollection',features:communes},{interactive:false,style:{color:'#fff',weight:.6,opacity:.8,fill:false}});
+  terrLayer=L.geoJSON({type:'FeatureCollection',features:terr},{style:styleT,onEachFeature:(f,l)=>{
+    l.bindTooltip(f.properties.nom,{sticky:true,className:'lbl'});
+    l.on('click',e=>{const c=locate(e.latlng.lat,e.latlng.lng);show(f.properties.id,c?{commune:c.nom,insee:c.insee,lat:e.latlng.lat,lon:e.latlng.lng}:null)});
+    l.on('mouseover',()=>l.setStyle({fillOpacity:.6}));l.on('mouseout',()=>terrLayer.resetStyle(l)||l.setStyle(styleT(f)));
+  }}).addTo(map);
+  comLayer.addTo(map);
+  map.on('zoomend',()=>terrLayer.setStyle(styleT));
+  map.fitBounds(terrLayer.getBounds(),{padding:[10,10]});
+  document.getElementById('legend').innerHTML=terr.map(f=>`<button data-t="${f.properties.id}"><span class="sw" style="background:${COL[f.properties.id]}"></span>${esc(f.properties.nom)}</button>`).join('');
+  document.querySelectorAll('#legend button').forEach(b=>b.onclick=()=>{const t=b.dataset.t;map.fitBounds(L.geoJSON(T[t]).getBounds(),{padding:[20,20]});show(t)});
+});
+
+/* Buscador de direcciones (Géoplateforme, con BAN de respaldo) */
+const q=document.getElementById('q'),sg=document.getElementById('sugg');let timer,items=[],cur=-1;
+async function geocode(text){
+  const urls=[`https://data.geopf.fr/geocodage/completion/?text=${encodeURIComponent(text)}&type=StreetAddress,PositionOfInterest&maximumResponses=6&terr=METROPOLE`,
+              `https://api-adresse.data.gouv.fr/search/?q=${encodeURIComponent(text)}&limit=6`];
+  try{const r=await fetch(urls[0]);const j=await r.json();if(j.results&&j.results.length)return j.results.map(x=>({label:x.fulltext,lat:x.y,lon:x.x}))}catch(e){}
+  try{const r=await fetch(urls[1]);const j=await r.json();return j.features.map(f=>({label:f.properties.label,lat:f.geometry.coordinates[1],lon:f.geometry.coordinates[0]}))}catch(e){return[]}
+}
+function render(){sg.innerHTML=items.map((it,i)=>`<button class="${i===cur?'on':''}" data-i="${i}">${esc(it.label)}</button>`).join('');sg.style.display=items.length?'block':'none';
+  sg.querySelectorAll('button').forEach(b=>b.onmousedown=e=>{e.preventDefault();pick(+b.dataset.i)})}
+function pick(i){const it=items[i];if(!it)return;q.value=it.label;items=[];render();goTo(it.lat,it.lon,it.label)}
+q.addEventListener('input',()=>{clearTimeout(timer);const v=q.value.trim();if(v.length<3){items=[];render();return}
+  timer=setTimeout(async()=>{items=await geocode(v);cur=-1;render()},250)});
+q.addEventListener('keydown',async e=>{
+  if(e.key==='ArrowDown'){cur=Math.min(cur+1,items.length-1);render();e.preventDefault()}
+  else if(e.key==='ArrowUp'){cur=Math.max(cur-1,0);render();e.preventDefault()}
+  else if(e.key==='Enter'){e.preventDefault();if(!items.length&&q.value.trim().length>2)items=await geocode(q.value.trim());pick(cur>=0?cur:0)}
+  else if(e.key==='Escape'){items=[];render()}});
+q.addEventListener('blur',()=>setTimeout(()=>{sg.style.display='none'},150));
+q.addEventListener('focus',()=>{if(items.length)sg.style.display='block'});
+</script>
+</body>
+</html>
