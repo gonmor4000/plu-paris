@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="es">
+<html lang="fr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>PLU de París y banlieue</title>
-<meta name="description" content="Mapa de París y su banlieue por territorios: busca una dirección y abre el PLU o PLUi que le corresponde.">
+<title>PLU de Paris et banlieue</title>
+<meta name="description" content="Carte de Paris et de sa banlieue par territoire : cherchez une adresse et ouvrez le PLU ou PLUi qui s’y applique.">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <style>
 :root{--bg:#f6f4ef;--card:#fff;--ink:#1d1f22;--muted:#5d6168;--line:#ddd8cc;--acc:#2f6b4f;--accbg:#e6f0ea;--warn:#8a5a00;--warnbg:#fbf0d9}
@@ -52,55 +52,62 @@ footer a{color:var(--acc)}
 .leaflet-tooltip.lbl{background:var(--card);color:var(--ink);border:1px solid var(--line);font:13px system-ui,sans-serif;padding:4px 8px}
 @media (max-width:860px){.wrap{grid-template-columns:1fr}#map{height:440px}}
 .ml{font-size:13.5px;line-height:1.8;margin:4px 0 10px}.ml a{white-space:nowrap}
+.homebtn{display:inline-flex;align-items:center;gap:6px;padding:6px 11px;border-radius:8px;border:1px solid var(--line);color:inherit;text-decoration:none;font-weight:600;font-size:14px;white-space:nowrap}
+.homebtn:hover{border-color:currentColor}
+.lang{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;font-size:13px;font-weight:600;flex:none}
+.lang a,.lang span{padding:5px 9px;text-decoration:none;color:inherit}
+.lang span{background:var(--line)}
+.lang a{opacity:.7}.lang a:hover{opacity:1}
 </style>
 </head>
 <body>
 <main>
-<h1>Urbanismo en París y su banlieue</h1>
-<p class="lead">Busca una dirección o haz clic en el mapa para saber qué documento de urbanismo se aplica y abrirlo.</p>
+<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin:0 0 18px"><span></span><div class="lang"><span>FR</span><a href="es/index.html" onclick="this.href=this.getAttribute('href').split('#')[0]+location.hash" hreflang="es" title="Ver en español">ES</a></div></div>
+<h1>L’urbanisme à Paris et en banlieue</h1>
+<p class="lead">Cherchez une adresse ou cliquez sur la carte pour savoir quel document d’urbanisme s’applique, et l’ouvrir.</p>
 
 <div class="search">
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
-  <input id="q" type="search" placeholder="Escribe una dirección, p. ej. 46 rue Planchat Paris" autocomplete="off" aria-label="Dirección">
+  <input id="q" type="search" placeholder="Saisissez une adresse, ex. : 46 rue Planchat Paris" autocomplete="off" aria-label="Adresse">
   <div class="sugg" id="sugg"></div>
 </div>
 
 <div class="wrap">
-  <div id="map" role="application" aria-label="Mapa de territorios"></div>
+  <div id="map" role="application" aria-label="Carte des territoires"></div>
   <aside class="panel">
-    <div id="info"><p class="hint">Selecciona una zona en el mapa o busca una dirección.</p></div>
-    <div class="legend"><h3>Territorios</h3><div id="legend"></div></div>
+    <div id="info"><p class="hint">Sélectionnez une zone sur la carte ou cherchez une adresse.</p></div>
+    <div class="legend"><h3>Territoires</h3><div id="legend"></div></div>
   </aside>
 </div>
 
-<h2 class="sec">Artículos del PLU de París por tipo de proyecto</h2>
-<p class="lead" style="margin-bottom:14px">Elige tu proyecto y te mostramos los artículos que hay que revisar, con una lista para ir marcándolos.</p>
+<h2 class="sec">Articles du PLU de Paris par type de projet</h2>
+<p class="lead" style="margin-bottom:14px">Choisissez votre projet : la page affiche les articles à vérifier, avec une liste à cocher.</p>
 <div class="grid pj">
-  <a class="card" href="explorador.html#proy/ite"><h2>Renovación energética</h2><p>Aislamiento por el exterior de muros y cubierta, carpinterías, protecciones solares, paneles. 17 artículos.</p><span class="go">Ver los artículos →</span></a>
-  <a class="card" href="explorador.html#proy/casa"><h2>Casa nueva</h2><p>Vivienda unifamiliar de obra nueva: implantación, alturas, espacios libres, bioclimatismo. 28 artículos.</p><span class="go">Ver los artículos →</span></a>
-  <a class="card" href="explorador.html#proy/colectivo"><h2>Edificio colectivo nuevo</h2><p>Viviendas de obra nueva: programa, gabarits, energía reforzada, bicis, externalidades. 40 artículos.</p><span class="go">Ver los artículos →</span></a>
+  <a class="card" href="explorador.html#proy/ite"><h2>Rénovation énergétique</h2><p>Isolation par l’extérieur des murs et de la toiture, menuiseries, protections solaires, panneaux. 17 articles.</p><span class="go">Voir les articles →</span></a>
+  <a class="card" href="explorador.html#proy/casa"><h2>Maison neuve</h2><p>Maison individuelle neuve : implantation, hauteurs, espaces libres, bioclimatisme. 28 articles.</p><span class="go">Voir les articles →</span></a>
+  <a class="card" href="explorador.html#proy/colectivo"><h2>Immeuble collectif neuf</h2><p>Logements neufs : programme, gabarits, énergie renforcée, vélos, externalités. 40 articles.</p><span class="go">Voir les articles →</span></a>
 </div>
 
-<h2 class="sec">Exploradores de los PLUi de la banlieue</h2>
-<p class="lead" style="margin-bottom:14px">El mismo formato que el de París para cada territorio: índice completo del reglamento, texto oficial con enlace a la página del PDF, buscador y lista de artículos por tipo de proyecto (renovación energética, ampliación, casa nueva, colectivo) filtrada por zona.</p>
-<div class="grid"><a class="card" href="plui/vsgp.html"><h2>Vallée Sud – Grand Paris</h2><p>721 páginas · 76 secciones · 50 zonas. PLUi aprobado 11/12/2024, en vigor 13/01/2025.</p><span class="go">Abrir →</span></a><a class="card" href="plui/gpso.html"><h2>Grand Paris Seine Ouest (GPSO)</h2><p>290 páginas · 91 secciones · 7 zonas. PLUi aprobado 11/12/2024, en vigor 20/01/2025.</p><span class="go">Abrir →</span></a><a class="card" href="plui/bns.html"><h2>Boucle Nord de Seine</h2><p>583 páginas · 353 secciones · 17 zonas. PLUi aprobado 26/06/2025.</p><span class="go">Abrir →</span></a><a class="card" href="plui/pc.html"><h2>Plaine Commune</h2><p>4955 páginas · 928 secciones · 46 zonas. Revisión n°1 aprobada 16/12/2025, en vigor 09/01/2026.</p><span class="go">Abrir →</span></a><a class="card" href="plui/pte.html"><h2>Paris Terres d'Envol</h2><p>511 páginas · 172 secciones · 9 zonas. PLUi aprobado 07/07/2025, aplicable 30/07/2025.</p><span class="go">Abrir →</span></a><a class="card" href="plui/ee.html"><h2>Est Ensemble</h2><p>635 páginas · 81 secciones · 30 zonas. PLUi aprobado 2020, versión en vigor 17/11/2025.</p><span class="go">Abrir →</span></a><a class="card" href="plui/gpge.html"><h2>Grand Paris Grand Est</h2><p>788 páginas · 3633 secciones · 31 zonas. PLUi aprobado 17/12/2024, en vigor 15/01/2025.</p><span class="go">Abrir →</span></a><a class="card" href="plui/pemb.html"><h2>Paris Est Marne & Bois</h2><p>1841 páginas · 319 secciones · 13 zonas. PLUi aprobado 12/12/2023.</p><span class="go">Abrir →</span></a><a class="card" href="plui/gpsea.html"><h2>Grand Paris Sud Est Avenir</h2><p>1153 páginas · 495 secciones · 10 zonas. PLUi aprobado 08/10/2025.</p><span class="go">Abrir →</span></a><a class="card" href="plui/gosb.html"><h2>Grand-Orly Seine Bièvre</h2><p>2837 páginas · 789 secciones · 10 zonas. PLUi aprobado 16/12/2025, en vigor 21/02/2026.</p><span class="go">Abrir →</span></a><a class="card" href="plui/gpseo.html"><h2>Grand Paris Seine & Oise (GPS&O)</h2><p>407 páginas · 745 secciones · 27 zonas. PLUi aprobado 16/01/2020 (versión del 03/09/2026).</p><span class="go">Abrir →</span></a><a class="card" href="plui/sqy.html"><h2>Saint-Quentin-en-Yvelines (SQY)</h2><p>103 páginas · 99 secciones · 3 zonas. PLUi aprobado 23/02/2017 (versión del 19/02/2026).</p><span class="go">Abrir →</span></a></div>
-<p class="lead" style="margin:14px 0 4px"><b>Paris Ouest La Défense</b> (aún sin PLUi), PLU por municipio: <a href="plui/pold_92026.html">Courbevoie</a> · <a href="plui/pold_92033.html">Garches</a> · <a href="plui/pold_92035.html">La Garenne-Colombes</a> · <a href="plui/pold_92044.html">Levallois-Perret</a> · <a href="plui/pold_92050.html">Nanterre</a> · <a href="plui/pold_92051.html">Neuilly-sur-Seine</a> · <a href="plui/pold_92062.html">Puteaux</a> · <a href="plui/pold_92063.html">Rueil-Malmaison</a> · <a href="plui/pold_92064.html">Saint-Cloud</a> · <a href="plui/pold_92073.html">Suresnes</a> · <a href="plui/pold_92076.html">Vaucresson</a></p>
+<h2 class="sec">Explorateurs des PLUi de la banlieue</h2>
+<p class="lead" style="margin-bottom:14px">Le même format que celui de Paris pour chaque territoire : index complet du règlement, texte officiel avec lien vers la page du PDF, recherche et liste des articles par type de projet (rénovation énergétique, extension, maison neuve, collectif) filtrée par zone.</p>
+<div class="grid"><a class="card" href="plui/vsgp.html"><h2>Vallée Sud – Grand Paris</h2><p>721 pages · 76 sections · 50 zones. PLUi approuvé le 11/12/2024, en vigueur le 13/01/2025.</p><span class="go">Ouvrir →</span></a><a class="card" href="plui/gpso.html"><h2>Grand Paris Seine Ouest (GPSO)</h2><p>290 pages · 91 sections · 7 zones. PLUi approuvé le 11/12/2024, en vigueur le 20/01/2025.</p><span class="go">Ouvrir →</span></a><a class="card" href="plui/bns.html"><h2>Boucle Nord de Seine</h2><p>583 pages · 353 sections · 17 zones. PLUi approuvé le 26/06/2025.</p><span class="go">Ouvrir →</span></a><a class="card" href="plui/pc.html"><h2>Plaine Commune</h2><p>4955 pages · 928 sections · 46 zones. Révision n°1 approuvée le 16/12/2025, en vigueur le 09/01/2026.</p><span class="go">Ouvrir →</span></a><a class="card" href="plui/pte.html"><h2>Paris Terres d'Envol</h2><p>511 pages · 172 sections · 9 zones. PLUi approuvé le 07/07/2025, applicable le 30/07/2025.</p><span class="go">Ouvrir →</span></a><a class="card" href="plui/ee.html"><h2>Est Ensemble</h2><p>635 pages · 81 sections · 30 zones. PLUi approuvé en 2020, version en vigueur du 17/11/2025.</p><span class="go">Ouvrir →</span></a><a class="card" href="plui/gpge.html"><h2>Grand Paris Grand Est</h2><p>788 pages · 3633 sections · 31 zones. PLUi approuvé le 17/12/2024, en vigueur le 15/01/2025.</p><span class="go">Ouvrir →</span></a><a class="card" href="plui/pemb.html"><h2>Paris Est Marne & Bois</h2><p>1841 pages · 319 sections · 13 zones. PLUi approuvé le 12/12/2023.</p><span class="go">Ouvrir →</span></a><a class="card" href="plui/gpsea.html"><h2>Grand Paris Sud Est Avenir</h2><p>1153 pages · 495 sections · 10 zones. PLUi approuvé le 08/10/2025.</p><span class="go">Ouvrir →</span></a><a class="card" href="plui/gosb.html"><h2>Grand-Orly Seine Bièvre</h2><p>2837 pages · 789 sections · 10 zones. PLUi approuvé le 16/12/2025, en vigueur le 21/02/2026.</p><span class="go">Ouvrir →</span></a><a class="card" href="plui/gpseo.html"><h2>Grand Paris Seine & Oise (GPS&O)</h2><p>407 pages · 745 sections · 27 zones. PLUi approuvé le 16/01/2020 (version du 03/09/2026).</p><span class="go">Ouvrir →</span></a><a class="card" href="plui/sqy.html"><h2>Saint-Quentin-en-Yvelines (SQY)</h2><p>103 pages · 99 sections · 3 zones. PLUi approuvé le 23/02/2017 (version du 19/02/2026).</p><span class="go">Ouvrir →</span></a></div>
+<p class="lead" style="margin:14px 0 4px"><b>Paris Ouest La Défense</b> (pas encore de PLUi), PLU par commune : <a href="plui/pold_92026.html">Courbevoie</a> · <a href="plui/pold_92033.html">Garches</a> · <a href="plui/pold_92035.html">La Garenne-Colombes</a> · <a href="plui/pold_92044.html">Levallois-Perret</a> · <a href="plui/pold_92050.html">Nanterre</a> · <a href="plui/pold_92051.html">Neuilly-sur-Seine</a> · <a href="plui/pold_92062.html">Puteaux</a> · <a href="plui/pold_92063.html">Rueil-Malmaison</a> · <a href="plui/pold_92064.html">Saint-Cloud</a> · <a href="plui/pold_92073.html">Suresnes</a> · <a href="plui/pold_92076.html">Vaucresson</a></p>
 
 <div class="grid">
   <a class="card" href="explorador.html">
-    <h2>Explorador del PLU bioclimatique</h2>
-    <p>Règlement Tome 1 de París: 400 artículos con buscador, glosario, figuras, resúmenes en español y guía por tipo de obra.</p>
-    <span class="go">Abrir el explorador →</span>
+    <h2>Explorateur du PLU bioclimatique</h2>
+    <p>Règlement Tome 1 de Paris : 400 articles avec recherche, glossaire, figures, résumés et guide par type de travaux.</p>
+    <span class="go">Ouvrir l’explorateur →</span>
   </a>
   <a class="card" href="enlaces.html">
-    <h2>Tabla de PLU de la banlieue</h2>
-    <p>Estado, fechas y enlaces oficiales de los PLUi de la Métropole du Grand Paris y la grande couronne.</p>
-    <span class="go">Ver la tabla →</span>
+    <h2>Tableau des PLU de la banlieue</h2>
+    <p>État, dates et liens officiels des PLUi de la Métropole du Grand Paris et de la grande couronne.</p>
+    <span class="go">Voir le tableau →</span>
   </a>
 </div>
 
 <footer>
-Documento de consulta sin valor reglamentario. Contornos municipales: geo.api.gouv.fr. Fondo de mapa y búsqueda de direcciones: IGN Géoplateforme. El texto oficial de París es el <a href="REG1.pdf">Règlement Tome 1 (PDF)</a>. Comprueba siempre la versión vigente en el <a href="https://www.geoportail-urbanisme.gouv.fr/map/">Géoportail de l'urbanisme</a>.
+Document de consultation sans valeur réglementaire. Contours communaux : geo.api.gouv.fr. Fond de carte et recherche d’adresses : IGN Géoplateforme. Le texte officiel de Paris est le <a href="REG1.pdf">Règlement Tome 1 (PDF)</a>. Vérifiez toujours la version en vigueur sur le <a href="https://www.geoportail-urbanisme.gouv.fr/map/">Géoportail de l'urbanisme</a>.
 </footer>
 </main>
 
@@ -124,25 +131,25 @@ function show(tid,ctx){
   selected=tid; terrLayer.setStyle(styleT);
   const p=T[tid].properties; let h='';
   if(ctx&&ctx.addr) h+=`<p class="meta" style="margin-bottom:8px">📍 ${esc(ctx.addr)}</p>`;
-  h+=p.estado==='municipal'?'<span class="tag w">PLU municipal</span>':`<span class="tag">${esc(p.doc)} aprobado</span>`;
+  h+=p.estado==='municipal'?'<span class="tag w">PLU communal</span>':`<span class="tag">${esc(p.doc)} approuvé</span>`;
   h+=`<h2>${esc(p.nom)}</h2>`;
-  h+=`<p class="meta">${ctx&&ctx.commune?'Municipio: <b>'+esc(ctx.commune)+'</b> · ':''}${tid==='paris'?'20 arrondissements':p.n+' municipios'}</p>`;
+  h+=`<p class="meta">${ctx&&ctx.commune?'Commune : <b>'+esc(ctx.commune)+'</b> · ':''}${tid==='paris'?'20 arrondissements':p.n+' communes'}</p>`;
   if(tid==='paris'){
-    h+=`<a class="btn" href="explorador.html">Abrir el explorador del PLU</a><a class="btn sec" href="explorador.html#proy">Artículos por tipo de proyecto</a><a class="btn sec" href="${p.url}" target="_blank" rel="noopener">PLU en paris.fr</a>`;
+    h+=`<a class="btn" href="explorador.html">Ouvrir l’explorateur du PLU</a><a class="btn sec" href="explorador.html#proy">Articles par type de projet</a><a class="btn sec" href="${p.url}" target="_blank" rel="noopener">PLU sur paris.fr</a>`;
   }else if(p.estado==='municipal'){
-    h+=`<p class="hint">Aquí aún no hay PLUi: se aplica el PLU de cada municipio.</p>`;
+    h+=`<p class="hint">Pas encore de PLUi ici : c’est le PLU de chaque commune qui s’applique.</p>`;
     if(ctx&&ctx.insee&&POLD[ctx.insee]){
-      h+=`<a class="btn" href="plui/pold_${ctx.insee}.html">Explorador del PLU de ${esc(ctx.commune)}</a><a class="btn sec" href="plui/pold_${ctx.insee}.html#proy">Artículos por tipo de proyecto</a>`;
+      h+=`<a class="btn" href="plui/pold_${ctx.insee}.html">Explorateur du PLU de ${esc(ctx.commune)}</a><a class="btn sec" href="plui/pold_${ctx.insee}.html#proy">Articles par type de projet</a>`;
     }else{
-      h+=`<p class="hint" style="margin-top:6px">Exploradores por municipio:</p><div class="ml">${Object.entries(POLD).map(([i,n])=>`<a href="plui/pold_${i}.html">${esc(n)}</a>`).join(' · ')}</div>`;
+      h+=`<p class="hint" style="margin-top:6px">Explorateurs par commune :</p><div class="ml">${Object.entries(POLD).map(([i,n])=>`<a href="plui/pold_${i}.html">${esc(n)}</a>`).join(' · ')}</div>`;
     }
-    if(ctx&&ctx.lat) h+=`<a class="btn sec" href="${GPU(ctx.lat,ctx.lon)}" target="_blank" rel="noopener">Ver la parcela en el Géoportail</a>`;
-    h+=`<a class="btn sec" href="${p.url}" target="_blank" rel="noopener">Página del territorio</a>`;
+    if(ctx&&ctx.lat) h+=`<a class="btn sec" href="${GPU(ctx.lat,ctx.lon)}" target="_blank" rel="noopener">Voir la parcelle sur le Géoportail</a>`;
+    h+=`<a class="btn sec" href="${p.url}" target="_blank" rel="noopener">Page du territoire</a>`;
   }else{
-    if(EXPL[tid]) h+=`<a class="btn" href="plui/${EXPL[tid]}.html">Abrir el explorador del PLUi</a><a class="btn sec" href="plui/${EXPL[tid]}.html#proy">Artículos por tipo de proyecto</a>`;
-    h+=`<a class="btn ${EXPL[tid]?'sec':''}" href="${p.url}" target="_blank" rel="noopener">Web del territorio</a>`;
+    if(EXPL[tid]) h+=`<a class="btn" href="plui/${EXPL[tid]}.html">Ouvrir l’explorateur du PLUi</a><a class="btn sec" href="plui/${EXPL[tid]}.html#proy">Articles par type de projet</a>`;
+    h+=`<a class="btn ${EXPL[tid]?'sec':''}" href="${p.url}" target="_blank" rel="noopener">Site du territoire</a>`;
   }
-  if(ctx&&ctx.lat&&p.estado!=='municipal') h+=`<a class="btn sec" href="${GPU(ctx.lat,ctx.lon)}" target="_blank" rel="noopener">Ver la parcela en el Géoportail</a>`;
+  if(ctx&&ctx.lat&&p.estado!=='municipal') h+=`<a class="btn sec" href="${GPU(ctx.lat,ctx.lon)}" target="_blank" rel="noopener">Voir la parcelle sur le Géoportail</a>`;
   document.getElementById('info').innerHTML=h;
 }
 
@@ -161,7 +168,7 @@ function goTo(lat,lon,label){
   if(c){show(c.t,{addr:label,commune:c.nom,insee:c.insee,lat,lon});}
   else{
     selected=null;terrLayer.setStyle(styleT);
-    document.getElementById('info').innerHTML=`<p class="meta">📍 ${esc(label)}</p><span class="tag w">Fuera de la Métropole du Grand Paris</span><h2>Consulta el Géoportail</h2><p class="hint">Esta dirección no está en París ni en los territorios del mapa. El Géoportail de l'urbanisme muestra su PLU.</p><a class="btn" href="${GPU(lat,lon)}" target="_blank" rel="noopener">Ver el PLU en el Géoportail</a>`;
+    document.getElementById('info').innerHTML=`<p class="meta">📍 ${esc(label)}</p><span class="tag w">Hors Métropole du Grand Paris</span><h2>Consultez le Géoportail</h2><p class="hint">Cette adresse n’est ni à Paris ni dans les territoires de la carte. Le Géoportail de l’urbanisme affiche son PLU.</p><a class="btn" href="${GPU(lat,lon)}" target="_blank" rel="noopener">Voir le PLU sur le Géoportail</a>`;
   }
 }
 
